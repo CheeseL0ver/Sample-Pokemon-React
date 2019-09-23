@@ -47,6 +47,7 @@ Populate Database Data:
 >**Note** If you need to reset all of the data in the database you can run the above command
 
 ##Usage
+
 Run the server using the following command:
 
 ```cd server && npm start```
