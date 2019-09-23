@@ -12,8 +12,7 @@ A sample JS application built using Node and React to display information from t
 
 - Install the requirements using npm for the client:
 
-```cd client && make install
-```
+```cd client && make install```
 
 - Install the requirements using npm for the server:
 
