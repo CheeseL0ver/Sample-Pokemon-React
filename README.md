@@ -16,8 +16,7 @@ A sample JS application built using Node and React to display information from t
 
 - Install the requirements using npm for the server:
 
-```cd server && make install
-```
+```cd server && make install```
 
 This will install all the required packages and libraries for using both the Node.js server and the React client.
 
@@ -31,23 +30,20 @@ This will install all the required packages and libraries for using both the Nod
 
 ## Database setup
 
-Log into mysql client
-``` mysql -u {user} -p
-```
+Log into mysql client:
+``` mysql -u {user} -p```
 
-Create database
-``` CREATE DATABASE {db_name};
-```
+Create database:
+``` CREATE DATABASE {db_name};```
 
 >**Note:** You can name the database whatever, however the code, by default, is expecting it to be named **Knex** if you do change the name you will need to update both the **knexfile.js** file and the **routes.js** file.
 
 Create Database Tables:
-```cd server && npx knex migrate:latest
-```
+```cd server && npx knex migrate:latest```
 
 Populate Database Data:
-```cd server && npx knex seed:run
-```
+```cd server && npx knex seed:run```
+
 >**Note** If you need to reset all of the data in the database you can run the above command
 
 ##Usage
@@ -59,8 +55,7 @@ The server will run on localhost:3001
 
 Start the client using the following command:
 
-```cd client && npm start
-```
+```cd client && npm start```
 
 Visit localhost:3000 to see the running website!
 
