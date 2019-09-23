@@ -5,8 +5,8 @@ const mysql = require("mysql");
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "pass",
-  database: "POKE2"
+  password: "password",
+  database: "Knex"
 });
 
 router.get("/", (req, res) => {
