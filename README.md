@@ -2,7 +2,7 @@
 A sample JS application built using Node and React to display information from the Pokemon series.
 
 ## Prerequisites
-* Install **mysql**
+- Install **mysql**
 - Install **npm**
 - Install **npx**
 
