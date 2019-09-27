@@ -2,7 +2,7 @@
 A sample JS application built using Node and React to display information from the Pokemon series.
 
 ## Prerequisites
-- Install **mysql**
+- Install **postgres**
 - Install **npm**
 - Install **npx**
 
@@ -20,7 +20,7 @@ A sample JS application built using Node and React to display information from t
 
 This will install all the required packages and libraries for using both the Node.js server and the React client.
 
-- Update both the **knexfile.js** and **routes.js** to use the correct mysql credentials:
+- Update both the **knexfile.js** and **routes.js** to use the correct postgres credentials:
 
  `cd server`
 
@@ -30,13 +30,13 @@ This will install all the required packages and libraries for using both the Nod
 
 ## Database setup
 
-Log into mysql client:
-``` mysql -u {user} -p```
+Log into psql client:
+``` psql -U {user} -W```
 
 Create database:
 ``` CREATE DATABASE {db_name};```
 
->**Note:** You can name the database whatever, however the code, by default, is expecting it to be named **Knex** if you do change the name you will need to update both the **knexfile.js** file and the **routes.js** file.
+>**Note:** You can name the database whatever, however the code, by default, is expecting it to be named **knex** if you do change the name you will need to update both the **knexfile.js** file and the **routes.js** file.
 
 Create Database Tables:
 ```cd server && npx knex migrate:latest```
