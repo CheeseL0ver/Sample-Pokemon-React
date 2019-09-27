@@ -1,12 +1,12 @@
 module.exports = {
 
   development: {
-    client: 'mysql',
+    client: 'pg',
     connection: {
 	    host:'localhost',
 	    user:'root',
-	    password:'pass',
-	    database:'Knex'
+	    password:'password',
+	    database:'knex'
 	  }
   }
 };
