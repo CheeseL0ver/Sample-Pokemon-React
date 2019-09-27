@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const mysql = require("mysql");
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "password",
-  database: "knex"
+const knex = require('knex')({
+	client: 'pg',
+	connection: {
+		host: 'localhost',
+		user: 'root',
+		password: 'password',
+		database: 'knex'
+	}
 });
 
 router.get("/", (req, res) => {
@@ -16,48 +18,51 @@ router.get("/", (req, res) => {
 });
 
 router.get("/pokemon", (req, res) => {
-  connection.query("SELECT * FROM Pokemon", (error, results, fields) => {
-    res.json({ message: results });
-  });
+	knex.select().from('Pokemon')
+	.then(function(pokemon) {
+		res.status(200);
+		res.json({message:pokemon});
+	});
 });
 
 router.get("/pokemon/:id", (req, res) => {
-  connection.query(
-    `SELECT * FROM Pokemon INNER JOIN Pokemon_Flavor ON Pokemon.id=Pokemon_Flavor.species_id WHERE id='${req.params.id}'`,
-    (error, results, fields) => {
-      if (results.length === 0)
-        results = `No results for pokemon with id ${req.params.id}`;
-      res.json({ message: results });
-    }
-  );
+	knex.select()
+		.from('Pokemon')
+		.innerJoin('Pokemon_Flavor','Pokemon.id'
+			,'=','Pokemon_Flavor.species_id')
+		.where('id',req.params.id)
+		.then(function(flavor) {
+			res.status(200);
+			res.json({message:flavor});
+		});
 });
 
 router.get("/moves", (req, res) => {
-  connection.query("SELECT * FROM Move", (error, results, fields) => {
-    res.json({ message: results });
-  });
+	knex.select().from('Move')
+		.then(function(moves) {
+			res.status(200);
+			res.json({message:moves});
+		});
 });
 
 router.get("/moves/:id", (req, res) => {
-  connection.query(
-    `SELECT * FROM Move WHERE id='${req.params.id}'`,
-    (error, results, fields) => {
-      if (results.length === 0)
-        results = `No results for pokemon move with id ${req.params.id}`;
-      res.json({ message: results });
-    }
-  );
+	knex.select()
+		.from('Move')
+		.where('id', req.params.id)
+		.then(function(moves) {
+			res.status(200);
+			res.json({message:moves});
+		});
 });
 
 router.get("/pokemon/moves/:id", (req, res) => {
-  connection.query(
-    `SELECT Pokemon_Moves.pokemon_id,Move.identifier,Move.id FROM Pokemon_Moves INNER JOIN Move ON Move.id=Pokemon_Moves.move_id WHERE pokemon_id='${req.params.id}'`,
-    (error, results, fields) => {
-      if (results.length === 0)
-        results = `No results for pokemon with id ${req.params.id}`;
-      res.json({ message: results });
-    }
-  );
+	knex.select('Pokemon_Moves.pokemon_id','Move.identifier','Move.id')
+	    .from('Pokemon_Moves')
+	    .innerJoin('Move','Move.id', '=', 'Pokemon_Moves.move_id')
+	    .where('pokemon_id',req.params.id)
+	    .then(function(moves) {
+		    res.json({message:moves});
+	    });
 });
 
 module.exports = router;
