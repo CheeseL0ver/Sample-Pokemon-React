@@ -24,7 +24,7 @@ class Pokemons extends React.Component {
             <td>{pokemon.height}</td>
           </tr>
         ));
-        this.setState({ data: pokemons , offset : 1});
+        this.setState({ data: pokemons, lastPage: responseJson.message.last_page});
       });
   }
 

@@ -1,4 +1,5 @@
 import React from "react";
+import ReactPaginate from "react-paginate";
 import {
   Table,
   Container,
@@ -9,6 +10,7 @@ class Pokemon extends React.Component {
   constructor(props) {
     super(props);
     this.state = { data: {}, moves: [] };
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
   componentDidMount() {
@@ -19,13 +21,27 @@ class Pokemon extends React.Component {
     fetch(`http://localhost:3001/pokemon/moves/${this.props.match.params.id}`)
       .then(response => response.json())
       .then(responseJson => {
-        const moves = responseJson.message.map(move => (
+        const moves = responseJson.message.data.map(move => (
           <tr>
             <td>{move.id}</td>
             <td>{move.identifier}</td>
           </tr>
         ));
-        this.setState({ moves });
+        this.setState({ moves, lastPage: responseJson.message.last_page });
+      });
+  }
+
+  handlePageClick(data) {
+    fetch(`http://localhost:3001/pokemon/moves/${this.props.match.params.id}?page=${data.selected + 1}`)
+      .then(response => response.json())
+      .then(responseJson => {
+        const moves = responseJson.message.data.map(move => (
+          <tr>
+            <td>{move.id}</td>
+            <td>{move.identifier}</td>
+          </tr>
+        ));
+        this.setState({ moves, lastPage: responseJson.message.last_page});
       });
   }
 
@@ -57,6 +73,19 @@ class Pokemon extends React.Component {
           </tr>
           {this.state.moves}
         </Table>
+        <ReactPaginate
+        previousLabel={'previous'}
+        nextLabel= {'next'}
+        breakLabel={'...'}
+        breakClassName={'break-me'}
+        pageCount={this.state.lastPage}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={this.handlePageClick}
+        containerClassName={'pagination'}
+          subContainerClassName={'pages pagination'}
+          activeClassName={'active'}
+      />
       </Container>
     );
   }
