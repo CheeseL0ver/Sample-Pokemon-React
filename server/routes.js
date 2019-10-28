@@ -11,14 +11,27 @@ const knex = require('knex')({
 	}
 });
 
+const setupPaginator = require("knex-paginator");
+setupPaginator(knex);
+
 router.get("/", (req, res) => {
   res.json({
     message: "Hello world"
   });
 });
 
+/*router.get("/pokemon", (req, res) => {
+	knex.select().from('Pokemon')
+	.then(function(pokemon) {
+		res.status(200);
+		res.json({message:pokemon});
+	});
+});
+*/
+
 router.get("/pokemon", (req, res) => {
 	knex.select().from('Pokemon')
+	.paginate(15, req.query.page || 1, true)
 	.then(function(pokemon) {
 		res.status(200);
 		res.json({message:pokemon});
