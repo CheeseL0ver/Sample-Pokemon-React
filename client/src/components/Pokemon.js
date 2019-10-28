@@ -3,7 +3,7 @@ import ReactPaginate from "react-paginate";
 import {
   Table,
   Container,
-	Media
+  Media
 } from "reactstrap";
 
 class Pokemon extends React.Component {
@@ -41,53 +41,58 @@ class Pokemon extends React.Component {
             <td>{move.identifier}</td>
           </tr>
         ));
-        this.setState({ moves, lastPage: responseJson.message.last_page});
+        this.setState({ moves, lastPage: responseJson.message.last_page });
       });
   }
 
   render() {
-    return (
-      <Container>
-        <Media>
-          <Media left href="#">
-            <Media
-              object
-              src={
-                process.env.PUBLIC_URL +
-                "/assets/sprites/pokemon/" +
-                this.state.data.id +
-                ".png"
-              }
-              alt="Generic placeholder image"
-            />
+    if (this.state.data) {
+      return (
+        <Container>
+          <Media>
+            <Media left href="#">
+              <Media
+                object
+                src={
+                  process.env.PUBLIC_URL +
+                  "/assets/sprites/pokemon/" +
+                  this.state.data.id +
+                  ".png"
+                }
+                alt="Generic placeholder image"
+              />
+            </Media>
+            <Media body>
+              <Media heading>{this.state.data.identifier}</Media>
+              {this.state.data.flavor_text}
+            </Media>
           </Media>
-          <Media body>
-            <Media heading>{this.state.data.identifier}</Media>
-	    {this.state.data.flavor_text}
-          </Media>
-        </Media>
-        <Table>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-          </tr>
-          {this.state.moves}
-        </Table>
-        <ReactPaginate
-        previousLabel={'previous'}
-        nextLabel= {'next'}
-        breakLabel={'...'}
-        breakClassName={'break-me'}
-        pageCount={this.state.lastPage}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
-        onPageChange={this.handlePageClick}
-        containerClassName={'pagination'}
-          subContainerClassName={'pages pagination'}
-          activeClassName={'active'}
-      />
-      </Container>
-    );
+          <Table>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+            </tr>
+            {this.state.moves}
+          </Table>
+          <ReactPaginate
+            previousLabel={'previous'}
+            nextLabel={'next'}
+            breakLabel={'...'}
+            breakClassName={'break-me'}
+            pageCount={this.state.lastPage}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={'pagination'}
+            subContainerClassName={'pages pagination'}
+            activeClassName={'active'}
+          />
+        </Container>
+      );
+    }
+    else {
+      return (<h1>Data Not Found</h1>);
+    }
   }
 }
 
