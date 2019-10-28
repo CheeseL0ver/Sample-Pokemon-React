@@ -1,15 +1,16 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {
-  Table,
   Container,
-  Media,
   Nav,
   NavItem,
   NavLink
 } from "reactstrap";
 
 import Pokemons from "./components/Pokemons";
+import Pokemon from "./components/Pokemon";
+import Moves from "./components/Moves";
+import Move from "./components/Move";
 
 function App() {
   return (
@@ -64,120 +65,6 @@ function About({ match }) {
       <h2>About: {match.params.id}</h2>
     </div>
   );
-}
-
-class Pokemon extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { data: {}, moves: [] };
-  }
-
-  componentDidMount() {
-    fetch(`http://localhost:3001/pokemon/${this.props.match.params.id}`)
-      .then(response => response.json())
-      .then(responseJson => this.setState({ data: responseJson.message[0] }));
-
-    fetch(`http://localhost:3001/pokemon/moves/${this.props.match.params.id}`)
-      .then(response => response.json())
-      .then(responseJson => {
-        const moves = responseJson.message.map(move => (
-          <tr>
-            <td>{move.id}</td>
-            <td>{move.identifier}</td>
-          </tr>
-        ));
-        this.setState({ moves });
-      });
-  }
-
-  render() {
-    return (
-      <Container>
-        <Media>
-          <Media left href="#">
-            <Media
-              object
-              src={
-                process.env.PUBLIC_URL +
-                "/assets/sprites/pokemon/" +
-                this.state.data.id +
-                ".png"
-              }
-              alt="Generic placeholder image"
-            />
-          </Media>
-          <Media body>
-            <Media heading>{this.state.data.identifier}</Media>
-	    {this.state.data.flavor_text}
-          </Media>
-        </Media>
-        <Table>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-          </tr>
-          {this.state.moves}
-        </Table>
-      </Container>
-    );
-  }
-}
-
-class Moves extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { data: [] };
-  }
-
-  componentDidMount() {
-    fetch(`http://localhost:3001/moves`)
-      .then(response => response.json())
-      .then(responseJson => {
-        const moves = responseJson.message.map(move => (
-          <tr>
-            <td>{move.id}</td>
-            <td>{move.identifier}</td>
-          </tr>
-        ));
-        this.setState({ data: moves });
-      });
-  }
-
-  render() {
-    return (
-      <Container>
-        <Table>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-          </tr>
-          {this.state.data}
-        </Table>
-      </Container>
-    );
-  }
-}
-
-class Move extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { data: {} };
-  }
-
-  componentDidMount() {
-    fetch(`http://localhost:3001/moves/${this.props.match.params.id}`)
-      .then(response => response.json())
-      .then(responseJson => this.setState({ data: responseJson.message[0] }));
-  }
-
-  render() {
-    return (
-      <div>
-        <h1>Name: {this.state.data.identifier}</h1>
-        <h1>ID: {this.state.data.id}</h1>
-      </div>
-    );
-  }
 }
 
 export default App;
