@@ -1,25 +1,49 @@
 const express = require("express");
 const router = express.Router();
+const knex = require("./connect");
+const handler = require('./handler');
+const middleware = require('./middleware');
 
-const knex = require('knex')({
-	client: 'pg',
-	connection: {
-		host: 'localhost',
-		user: 'root',
-		password: 'password',
-		database: 'knex'
-	}
-});
+router.use(express.json());
+
 
 const setupPaginator = require("knex-paginator");
 setupPaginator(knex);
-
+/*
+function verifyUser(username, password){
+	knex.select().from('User')
+		.where({username: username, password: password)})
+		.then((user) => {
+			if 
+		});
+};
+*/
 router.get("/", (req, res) => {
   res.json({
     message: "Hello world"
   });
 });
 
+router.get("/secured", middleware.checkToken, (req, res) => {
+  res.json({
+    message: "Hello world (SECURED)"
+  });
+});
+
+router.post('/login', handler.login);
+
+/*
+router.post("/login", (req, res) => {
+	let {username, password} = req.body;
+	if (verifyUser(username, password)){
+		res.body({'Message':'User exists!!!'});
+		//verifyToken(username, password)
+	}
+	else{
+		res.body({'Message':'User not found'});
+	}
+});
+*/
 router.get("/pokemon", (req, res) => {
 	knex.select().from('Pokemon')
 	.paginate(15, req.query.page || 1, true)
